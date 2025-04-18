@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porofite Games | Портатал премиальных игр</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-cyan: #0ff0fc;
+            --neon-magenta: #ff00ff;
+            --neon-purple: #8a2be2;
+            --dark-void: #0a0a12;
+            --cyber-gray: #1a1a24;
+            --text-glow: 0 0 10px var(--neon-cyan), 0 0 20px rgba(0, 255, 252, 0.3);
+            --box-glow: 0 0 15px var(--neon-purple), 0 0 30px rgba(138, 43, 226, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+        }
+
+        @font-face {
+            font-family: 'Rajdhani';
+            src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&display=swap');
+        }
+
+        body {
+            background: radial-gradient(ellipse at bottom, var(--dark-void) 0%, #000000 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Хедер в стиле киберпанк */
+        header {
+            text-align: center;
+            margin: 40px 0 60px;
+            position: relative;
+            padding: 40px 0;
+            background: rgba(10, 10, 30, 0.3);
+            border-radius: 5px;
+            border-top: 1px solid var(--neon-cyan);
+            border-bottom: 1px solid var(--neon-magenta);
+            box-shadow: 0 0 30px rgba(0, 255, 252, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--text-glow);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        /* Сетка игр с эффектом голограммы */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        /* Карточка игры в стиле киберпанк */
+        .game-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 5px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            box-shadow: var(--box-glow);
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            border-left: 3px solid var(--neon-cyan);
+            border-right: 3px solid var(--neon-magenta);
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                        0 0 30px var(--neon-cyan),
+                        0 0 50px var(--neon-purple);
+        }
+
+        /* Иконка игры с эффектом свечения */
+        .game-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), 
+                        inset 0 0 10px var(--neon-cyan);
+            font-size: 2.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover .game-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-magenta), 
+                        inset 0 0 15px var(--neon-magenta);
+            border-color: var(--neon-magenta);
+        }
+
+        /* Заголовок игры */
+        .game-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 10px var(--neon-cyan);
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .game-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            transition: width 0.3s ease;
+        }
+
+        .game-card:hover .game-title::after {
+            width: 100px;
+        }
+
+        /* Описание игры */
+        .game-description {
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            text-align: center;
+        }
+
+        /* Особенности игры */
+        .game-features {
+            margin-bottom: 25px;
+            list-style-type: none;
+        }
+
+        .game-features li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 30px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .game-features li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        /* Кнопка игры с эффектом неоновой подсветки */
+        .play-button {
+            display: block;
+            text-align: center;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-purple));
+            color: white;
+            padding: 15px 25px;
+            border-radius: 0;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-cyan), 
+                        0 0 30px rgba(0, 255, 252, 0.3);
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            clip-path: polygon(
+                0 0,
+                100% 0,
+                100% calc(100% - 10px),
+                calc(100% - 10px) 100%,
+                0 100%
+            );
+        }
+
+        .play-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px var(--neon-cyan), 
+                        0 0 50px rgba(0, 255, 252, 0.5);
+        }
+
+        /* Тег игры */
+        .game-tag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 0, 255, 0.2);
+            color: var(--neon-magenta);
+            padding: 5px 15px;
+            border-radius: 0;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--neon-magenta);
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+            clip-path: polygon(
+                0 0,
+                calc(100% - 10px) 0,
+                100% 10px,
+                100% 100%,
+                10px 100%,
+                0 calc(100% - 10px)
+            );
+        }
+
+        /* Футер с эффектом цифрового шума */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            position: relative;
+            background: rgba(10, 10, 20, 0.5);
+            border-top: 1px solid rgba(0, 255, 252, 0.2);
+        }
+
+        /* Эффекты цифрового окружения */
+        .digital-effects {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0, 255, 252, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 252, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Анимация пульсации */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .pulse {
+            animation: pulse 3s infinite ease-in-out;
+        }
+
+        /* Мобильные стили */
+        @media (max-width: 992px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .game-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 3px;
+            }
+
+            .game-card {
+                padding: 20px;
+            }
+        }
+
+        /* Эффект загрузки */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark-void);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+
+        .loader-logo {
+            font-size: 3rem;
+            color: var(--neon-cyan);
+            text-shadow: var(--text-glow);
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loader-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+            box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-magenta);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Эффект загрузки -->
+    <div class="loader" id="loader">
+        <div class="loader-logo">POROFITE GAMES</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Цифровые эффекты -->
+    <div class="digital-effects">
+        <div class="grid-lines"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>POROFITE GAMES</h1>
+            <div class="subtitle">ЭКСКЛЮЗИВНЫЕ ИГРОВЫЕ ВПЕЧАТЛЕНИЯ</div>
+        </header>
+
+        <div class="games-grid">
+            <!-- АлкоКалькулятор -->
+            <div class="game-card">
+                <div class="game-tag">Полезное</div>
+                <div class="game-icon">
+                    <i class="fas fa-wine-glass-alt"></i>
+                </div>
+                <h3 class="game-title">АлкоКалькулятор</h3>
+                <p class="game-description">
+                    Научный подход к веселью. Рассчитай свою норму и узнай, когда можно садиться за руль без последствий.
+                </p>
+                <ul class="game-features">
+                    <li>Точные (но не медицинские) расчеты</li>
+                    <li>Учет разных типов напитков</li>
+                    <li>Персональные рекомендации</li>
+                    <li>Юморные советы и подсказки</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/alcohol-calculator/" class="play-button" target="_blank">
+                    Рассчитать
+                </a>
+            </div>
+
+            <!-- Эффекты -->
+            <div class="game-card">
+                <div class="game-tag">Творчество</div>
+                <div class="game-icon">
+                    <i class="fas fa-magic"></i>
+                </div>
+                <h3 class="game-title">Творец Красоты</h3>
+                <p class="game-description">
+                    Создавай гипнотические узоры и взрывы цвета одним касанием. Твой цифровой холст ждет своего художника!
+                </p>
+                <ul class="game-features">
+                    <li>Десятки уникальных эффектов</li>
+                    <li>Интуитивное управление</li>
+                    <li>Возможность сохранить творения</li>
+                    <li>Расслабляющий геймплей</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/Effects/" class="play-button" target="_blank">
+                    Творить
+                </a>
+            </div>
+
+            <!-- Memory Master -->
+            <div class="game-card">
+                <div class="game-tag">Развитие</div>
+                <div class="game-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="game-title">Memory Master</h3>
+                <p class="game-description">
+                    Тренируй все виды памяти в 4-х уникальных режимах. От классики до сложных вербальных тестов.
+                </p>
+                <ul class="game-features">
+                    <li>4 режима сложности</li>
+                    <li>Адаптивный уровень</li>
+                    <li>Статистика прогресса</li>
+                    <li>Минималистичный дизайн</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/Memory/" class="play-button" target="_blank">
+                    Тренировать
+                </a>
+            </div>
+
+            <!-- Patapim -->
+            <div class="game-card">
+                <div class="game-tag">Тест</div>
+                <div class="game-icon">
+                    <i class="fas fa-paw"></i>
+                </div>
+                <h3 class="game-title">Итальянские Животные</h3>
+                <p class="game-description">
+                    Узнай, какое загадочное итальянское животное соответствует твоей личности. Поделись результатом с друзьями!
+                </p>
+                <ul class="game-features">
+                    <li>10 уникальных персонажей</li>
+                    <li>Забавные описания</li>
+                    <li>Яркие иллюстрации</li>
+                    <li>Возможность поделиться</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/Patapim/" class="play-button" target="_blank">
+                    Пройти тест
+                </a>
+            </div>
+
+            <!-- Теневой Арбитр -->
+            <div class="game-card">
+                <div class="game-tag">Сюжет</div>
+                <div class="game-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <h3 class="game-title">Теневой Арбитр</h3>
+                <p class="game-description">
+                    Ты - незримый судья во тьме. Твой приговор решит судьбу подсудимых. Будь справедлив, но помни - каждое решение имеет последствия.
+                </p>
+                <ul class="game-features">
+                    <li>Моральные дилеммы</li>
+                    <li>Развивающийся сюжет</li>
+                    <li>Множество концовок</li>
+                    <li>Глубокие персонажи</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/Ta/" class="play-button" target="_blank">
+                    Судить
+                </a>
+            </div>
+
+            <!-- Cosmic Clicker -->
+            <div class="game-card">
+                <div class="game-tag">Кликер</div>
+                <div class="game-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3 class="game-title">Cosmic Clicker</h3>
+                <p class="game-description">
+                    Построй космическую империю! Прокачивай станции, защищайся от астероидов и зарабатывай космокредиты.
+                </p>
+                <ul class="game-features">
+                    <li>30+ улучшений</li>
+                    <li>Система престижа</li>
+                    <li>Захватывающая прокачка</li>
+                    <li>Эпические визуальные эффекты</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/Clicker/" class="play-button" target="_blank">
+                    Играть
+                </a>
+            </div>
+
+            <!-- Шашки -->
+            <div class="game-card">
+                <div class="game-tag">Классика</div>
+                <div class="game-icon">
+                    <i class="fas fa-chess"></i>
+                </div>
+                <h3 class="game-title">Кибер Шашки</h3>
+                <p class="game-description">
+                    Классическая игра в футуристичном оформлении. Сражайся против ИИ или друга на цифровом поле боя.
+                </p>
+                <ul class="game-features">
+                    <li>3 уровня сложности</li>
+                    <li>Неоновый дизайн</li>
+                    <li>Подсказки для новичков</li>
+                    <li>Статистика побед</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/ches/" class="play-button" target="_blank">
+                    Сразиться
+                </a>
+            </div>
+
+            <!-- Генератор QR-кодов -->
+            <div class="game-card">
+                <div class="game-tag">Инструмент</div>
+                <div class="game-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h3 class="game-title">Генератор QR</h3>
+                <p class="game-description">
+                    Создавай стильные QR-коды в киберпанк стиле. Настраивай дизайн и делитесь с миром.
+                </p>
+                <ul class="game-features">
+                    <li>Поддержка разных типов данных</li>
+                    <li>Неоновые цветовые схемы</li>
+                    <li>Мгновенное создание</li>
+                    <li>Экспорт в высоком качестве</li>
+                </ul>
+                <a href="https://hhdhzhnzvz.github.io/qr/" class="play-button" target="_blank">
+                    Создать
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 POROFITE GAMES | ВСЕ ПРАВА ЗАЩИЩЕНЫ</p>
+            <p>Создано с <i class="fas fa-heart" style="color: var(--neon-magenta); text-shadow: 0 0 10px var(--neon-magenta);"></i> для истинных геймеров</p>
+        </footer>
+    </div>
+
+    <script>
+        // Загрузка страницы
+        function simulateLoading() {
+            const loader = document.getElementById('loader');
+            const progress = document.getElementById('loader-progress');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                width += Math.random() * 10;
+                progress.style.width = `${width}%`;
+                
+                if (width >= 100) {
+                    clearInterval(interval);
+                    loader.style.opacity = '0';
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                    }, 1000);
+                }
+            }, 100);
+        }
+
+        // Инициализация
+        window.addEventListener('load', () => {
+            simulateLoading();
+        });
+    </script>
+</body>
+</html>
